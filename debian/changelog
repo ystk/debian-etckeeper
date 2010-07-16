@@ -1,0 +1,514 @@
+etckeeper (0.48) unstable; urgency=low
+
+  * Fix backwards test for HGUSER. (Mike Rich)
+    Closes: #589242
+  * 'etckeeper vcs' can be used to run arbitrary VCS subcommands
+    in the etckeeper environment. (Thanks, Stefan Tomanek)
+
+ -- Joey Hess <joeyh@debian.org>  Fri, 16 Jul 2010 15:14:05 -0400
+
+etckeeper (0.47) unstable; urgency=low
+
+  * Set HOME=~root so that VCS like bzr do not drop root-owned files in
+    user home directory when sudo etckeeper is run. Closes: #583581
+  * hg: Set HGUSER (if not already set) to avoid warning message when
+    committing. Closes: #533298
+  * Both git and bzr default to showing the author of a commit,
+    and not the committer. So, set the author to the user running sudo
+    for both. The committer will then be root.
+
+ -- Joey Hess <joeyh@debian.org>  Sun, 30 May 2010 16:50:09 -0400
+
+etckeeper (0.46) unstable; urgency=low
+
+  * Support etckeeper commit --stdin
+  * Fix bug where after a large upgrade, etckeeper's automatic commit message
+    was so long it exceeded command line length limits. Closes: #581678
+
+ -- Joey Hess <joeyh@debian.org>  Sun, 16 May 2010 19:10:57 -0400
+
+etckeeper (0.45) unstable; urgency=low
+
+  * Revert darcs to using --logfile again, necessary for multiline commit
+    messages. Closes: #577915
+  * Fix logic error in darcs user code. Closes: #577918
+
+ -- Joey Hess <joeyh@debian.org>  Thu, 15 Apr 2010 11:50:22 -0400
+
+etckeeper (0.44) unstable; urgency=low
+
+  * Add example to README of how to automatically push changes to a backup
+    repository.
+  * Add fuse lock file to ignore list.
+  * Changed darcs to specify --author instead of noting the committing
+    user inside the commit log.
+  * Add -a to DARCS_COMMIT_OPTIONS so commits are noninteractive by default,
+    but users who want darcs prompting can disable it.
+  * Use darcs record -m to specify commit message, instead of using a logfile.
+  * Closes: #519228
+  * Update depends for git-core to git transition. Closes: #577732
+  * Avoid using hostname -f, since on Solaris that sets the hostname to -f.
+    Yay, Unix portability! (Instead, use dnsdomainname if available, and
+    otherwise, fall back to the unqualified hostname.)
+  * Other portability fixes for non-GNU tools and OS X. Thanks, Neil Mayhew.
+
+ -- Joey Hess <joeyh@debian.org>  Wed, 14 Apr 2010 15:43:14 -0400
+
+etckeeper (0.43) unstable; urgency=low
+
+  * Fix cleanup of /var/cache/etckeeper/packagelist.pre-install after
+    an upgrade where no conffiles are changed.
+  * Prevent cron job autocommit from happening if pre-install file
+    is present, to avoid committing state in the middle of an apt run.
+    Closes: #567538
+  * Add /etc/webmin/webmin/oscache to ignore list. Closes: #567255
+  * Check owner of tty to determine who has su'd to root when committing,
+    based on a patch by Jakov Sosic.
+  * Add apparmor.d/cache/ to default ignores.
+  * Record real committer username in the darcs log, so that the man page
+    can say that for every VCS the username is recorded.
+
+ -- Joey Hess <joeyh@debian.org>  Thu, 18 Feb 2010 14:01:45 -0500
+
+etckeeper (0.42) unstable; urgency=low
+
+  * Deal with removal of the cache directory. Closes: #559418
+  * Add ucf backups to ignore list. (See #462355)
+  * Add webmin fsdump status files to ignore list. Closes: #567000
+  * Add *.old to ignore list (See #462355)
+  * Add *.elc to ignore list (See #491401)
+  * Add ntp.conf.dhcp and X11/xdm/authdir/authfiles/* to ignore list.
+    Closes: #491401
+  * Fix handling of "#*#" ignores for git and hg.
+  * Add runit and daemontools supervise files to ignore list.
+    Closes: #529253
+
+ -- Joey Hess <joeyh@debian.org>  Tue, 26 Jan 2010 16:20:38 -0500
+
+etckeeper (0.41) unstable; urgency=low
+
+  * Change etckeeper uninit to not remove .gitignore (etc) file
+    if it lacks the "managed by etckeeper" comment. Closes: #545137
+  * Fix hgrc setup code to not warn if the hgrc already contains
+    a call to etckeeper. (Thanks, Jakov Sosic)
+  * Updated Czech debconf translation from Miroslav Kure. Closes: #546411
+
+ -- Joey Hess <joeyh@debian.org>  Sat, 26 Sep 2009 15:58:15 -0400
+
+etckeeper (0.40) unstable; urgency=low
+
+  * Add Spanish debconf translation. Closes: #539589
+  * Updated Italian debconf translation. Closes: #540516
+  * Avoid infinite loop when displaying message about failure
+    to commit changes in /etc. Closes: #540596
+
+ -- Joey Hess <joeyh@debian.org>  Sat, 08 Aug 2009 21:21:27 -0400
+
+etckeeper (0.39) unstable; urgency=low
+
+  * Document ETCKEEPER_CONF_DIR in man page.
+  * Typo. Closes: #536799
+  * bzr: Set author to root when committing via sudo. Committer
+    will be the sudo user, as it is in git.
+
+ -- Joey Hess <joeyh@debian.org>  Fri, 31 Jul 2009 13:47:09 -0400
+
+etckeeper (0.38) unstable; urgency=low
+
+  * Use hostname if hostname -f fails. Closes: #533295
+  * Automatically commit on initial install, so users can
+    begin relying on etckeeper right away. Closes: #533290
+
+ -- Joey Hess <joeyh@debian.org>  Wed, 08 Jul 2009 14:40:58 -0400
+
+etckeeper (0.37) unstable; urgency=low
+
+  * Make postinst check for the configured VCS before trying to run
+    etckeeper init. Closes: #530497
+  * Update French debconf translation. Closes: #530795
+  * Fix typo in cruft file. Closes: #530819
+  * Update Portuguese debconf translation. Closes: #528109
+  * Update German debconf translation. Closes: #532346
+
+ -- Joey Hess <joeyh@debian.org>  Mon, 08 Jun 2009 13:24:13 -0400
+
+etckeeper (0.36) unstable; urgency=low
+
+  * Add cruft ignore file. Closes: #522513
+  * Update Japanese debconf translation. Closes: #527921
+  * Update Swedish debconf translation. Closes: #528575
+  * Update Russian debconf translation. Closes: #528798
+
+ -- Joey Hess <joeyh@debian.org>  Sat, 16 May 2009 18:22:49 -0400
+
+etckeeper (0.35) unstable; urgency=low
+
+  * Make etckeeper uninit -f disable the prompt.
+  * Uninit on purge, guarded by a debconf prompt. Closes: #527218
+
+ -- Joey Hess <joeyh@debian.org>  Wed, 06 May 2009 14:52:30 -0400
+
+etckeeper (0.34) unstable; urgency=low
+
+  * Add support for mktemp if tempfile is not available.
+  * Fix uninit prompt to accept 'y' as well as 'yes'. Closes: #517911
+  * README: Typo. Closes: #517914
+
+ -- Joey Hess <joeyh@debian.org>  Mon, 02 Mar 2009 17:01:09 -0500
+
+etckeeper (0.33) unstable; urgency=low
+
+  * Add support for yum. Thanks, Jimmy Tang.
+
+ -- Joey Hess <joeyh@debian.org>  Wed, 25 Feb 2009 14:38:12 -0500
+
+etckeeper (0.32) unstable; urgency=low
+
+  * Add uninit subcommand, which cleans up all etckeeper and VCS droppings
+    in /etc. This is useful if you want to switch to a different VCS and
+    don't have any history to preserve. (Preserving history and converting
+    is of course possible, but significantly harder.)
+  * Run etckeeper init on initial install. Closes: #505772
+    (The idea being that if someone doesn't want to use git, they can
+    immediatly uninit to easily reverse this.)
+  * Document how to change the VCS used by etckeeper, without preserving 
+    any history. Preserving history left as an exersise for the reader.
+    Closes: #515237
+  * Implement list-installed for rpm.
+  * Added a spec file contributed by Jimmy Tang.
+
+ -- Joey Hess <joeyh@debian.org>  Tue, 24 Feb 2009 23:01:55 -0500
+
+etckeeper (0.31) unstable; urgency=low
+
+  * Avoid relying on USER being set, won't be for cron job.
+    Closes: #515602
+  * Add .sw? to ignores. vim uses that if editing an
+    unspecified file name. Closes: #515628
+
+ -- Joey Hess <joeyh@debian.org>  Mon, 16 Feb 2009 15:40:42 -0500
+
+etckeeper (0.30) unstable; urgency=low
+
+  * Add vim .*.sw? files to default ignores.
+  * Also add emacs #*# autosave files to default ignores.
+  * And DEADJOE files, for good measure.
+  * etckeeper update-ignore will automatically update the VCS ignore
+    file, only touching the part inside a "# managed by etckeeper"
+    comment block. (You may want to add such a comment block to your existing
+    .gitignore, or delete the file and regenerate it.)
+  * Run etckeeper update-ignore on upgrade.
+  * Fix handling of -d in recursive calls to etckeeper 
+
+ -- Joey Hess <joeyh@debian.org>  Sat, 14 Feb 2009 01:21:22 -0500
+
+etckeeper (0.29) unstable; urgency=low
+
+  * Add a daily cron job to autocommit changes to /etc. Closes: #515100
+    The cron job is enabled by default but can be disabled
+    via etckeeper.conf.
+    (Thanks to Thierry Carrez)
+  * Fix executable bits on two darcs support scripts.
+
+ -- Joey Hess <joeyh@debian.org>  Fri, 13 Feb 2009 13:43:02 -0500
+
+etckeeper (0.28) unstable; urgency=low
+
+  * Support darcs. Thanks to Gian Piero Carrubba. Closes: #510032
+
+ -- Joey Hess <joeyh@debian.org>  Thu, 12 Feb 2009 17:13:23 -0500
+
+etckeeper (0.27) unstable; urgency=low
+
+  * Use SUDO_USER as the committer if set. Closes: #498739
+    (Thierry Carrez)
+  * bzr: Avoid use of etckeeper pre-commit on Trees not on the
+    filesystem. (Jelmer Vernooij)
+
+ -- Joey Hess <joeyh@debian.org>  Sun, 01 Feb 2009 17:20:11 -0500
+
+etckeeper (0.26) unstable; urgency=low
+
+  * Add Japanese debconf translation. Closes: #512869
+  * Prevent git from removing a directory when the last file in it
+    has been removed, but the directory is left existing and empty,
+    by touching a flag file before calling git rm. Closes: 513006
+
+ -- Joey Hess <joeyh@debian.org>  Sun, 25 Jan 2009 13:55:56 -0500
+
+etckeeper (0.25) unstable; urgency=low
+
+  * Fix filter_unknown calls. Closes: 509888
+
+ -- Joey Hess <joeyh@debian.org>  Wed, 31 Dec 2008 13:01:31 -0500
+
+etckeeper (0.24) unstable; urgency=low
+
+  * Make .etckeeper test that files actually exist
+    before acting on them. Closes: #509888
+
+ -- Joey Hess <joeyh@debian.org>  Mon, 29 Dec 2008 15:37:25 -0500
+
+etckeeper (0.23) unstable; urgency=low
+
+  * Fix hook scripts to use new etckeeper path. Closes: #509742
+
+ -- Joey Hess <joeyh@debian.org>  Thu, 25 Dec 2008 16:25:25 -0500
+
+etckeeper (0.22) unstable; urgency=low
+
+  * Move etckeeper to sbin, and man page to section 8, since only an admin
+    can really use etckeeper. Closes: #509152
+  * Mention README file from man page.
+  * Build using python-central. For some reason bzr does not pick up on
+    plugins built using python-support.
+
+ -- Joey Hess <joeyh@debian.org>  Tue, 23 Dec 2008 18:51:14 -0500
+
+etckeeper (0.21) unstable; urgency=low
+
+  * Swedish debconf translation from Martin Ågren. Closes: #492063
+  * Make etckeeper init -d set up commit hooks that call etckeeper -d.
+    (Note that if you've relied on it setting up such commit hooks for a repo
+    outside of /etc already, it created broken ones that need to be fixed to use
+    -d.)
+    Thanks, Wolfgang Karall.
+
+ -- Joey Hess <joeyh@debian.org>  Thu, 11 Sep 2008 16:41:16 -0400
+
+etckeeper (0.20) unstable; urgency=low
+
+  [ Jelmer Vernooij ]
+  * Use new Bazaar API.
+  * Pass --quiet to bzr add to avoid new files from being printed twice.
+  * Don't consider warnings from bzr plugins when checking if tree was
+    modified.
+
+ -- Joey Hess <joeyh@debian.org>  Mon, 07 Jul 2008 12:04:30 -0400
+
+etckeeper (0.19) unstable; urgency=low
+
+  * Patch from Miklos Vajna to fix one more git- command that crept in.
+
+ -- Joey Hess <joeyh@debian.org>  Sat, 05 Jul 2008 08:34:22 -0400
+
+etckeeper (0.18) unstable; urgency=low
+
+  * Allow AVOID_COMMIT_BEFORE_INSTALL to be set to zero to disable.
+  * Don't allow LC_COLLATE to reorder the .etckeeper file. Closes: #489057
+
+ -- Joey Hess <joeyh@debian.org>  Thu, 03 Jul 2008 00:47:40 -0400
+
+etckeeper (0.17) unstable; urgency=low
+
+  * Fix backwards test for AVOID_COMMIT_BEFORE_INSTALL. Closes: #486922
+
+ -- Joey Hess <joeyh@debian.org>  Wed, 18 Jun 2008 20:36:52 -0400
+
+etckeeper (0.16) unstable; urgency=low
+
+  [ Joey Hess]
+  * Add a AVOID_COMMIT_BEFORE_INSTALL option in the config file to make it
+    easy to configure etckeeper to abort an installation if there are
+    uncommitted changes in /etc. Closes: #478754
+
+ -- Joey Hess <joeyh@debian.org>  Mon, 16 Jun 2008 19:21:16 -0400
+
+etckeeper (0.15) unstable; urgency=low
+
+  [ Daniel Hahler ]
+  * bzr: Set nickname for tree in init.d/40vcs-init.
+  * Add script to add new files during "commit" for bzr (commit.d/30bzr-add).
+    Closes: #477321
+  * Fix handling of files with spaces, by setting IFS to "newline" in
+    commit.d/40git-rm.
+
+  [ Jelmer Vernooij ]
+  * Support for the new bzr pre-commit hook. This requires bzr version 1.4.
+    Closes: #473069
+  * Remove pointless commit.d/40bzr-rm script. 
+
+  [ Joey Hess ]
+  * debhelper v7; rules file minimisation
+
+ -- Joey Hess <joeyh@debian.org>  Sat, 03 May 2008 15:08:12 -0400
+
+etckeeper (0.14.2) unstable; urgency=low
+
+  * Handle nonzero exit status when building package list diff.
+
+ -- Joey Hess <joeyh@debian.org>  Thu, 17 Apr 2008 13:00:29 -0400
+
+etckeeper (0.14.1) unstable; urgency=low
+
+  * Fix typo in bzr-precommit script. Closes: #473069
+    This is an interim fix -- full bzr precommit support has been implemented,
+    but the bzr that supports it is not yet released.
+  * Fix handling of files with spaces, by setting IFS to NL.
+
+ -- Joey Hess <joeyh@debian.org>  Wed, 16 Apr 2008 19:16:52 -0400
+
+etckeeper (0.14) unstable; urgency=low
+
+  * When deleting the .metadata, only $VCS rm it if using git. hg write
+    locks the repo when the pre-commit hook is running, so it would lock.
+
+ -- Joey Hess <joeyh@debian.org>  Sat, 29 Mar 2008 13:43:20 -0400
+
+etckeeper (0.13) unstable; urgency=low
+
+  * Drop the debconf prompt before committing in pre-install.
+    Closes: #470577, #462161, #471157, #462161
+  * Stop using metastore, instead add shell commands to .etckeeper
+    to handle permissions. Patch by Scott Bronson. The main advantages
+    of this approach are:
+    - .etckeeper uses less disk space than .metadata.
+    - Git diff includes changes to the commands in the file, which is more
+      transparent than a change to the binary .metadata file, and does not
+      produce conflicts during merging.
+    - Revision control directories such as .hg are filtered out.
+      Closes: #471371
+    Note that repositories still including .metadata files will be
+    automatically transitioned, and the file removed. Also, etckeeper init
+    on a historical version of a repository that still contains .metadata
+    will use it, if metastore is installed.
+  * Keep track of what packages change state during an installation,
+    and include that in the commit message at the end. Closes: #459384
+
+ -- Joey Hess <joeyh@debian.org>  Tue, 25 Mar 2008 20:53:23 -0400
+
+etckeeper (0.12) unstable; urgency=low
+
+  * Use git ls-files instead of git status. Depend on new enough git for this.
+  * Add support for bzr, thanks to Mark A. Hershberger. Closes: #470515
+    (Note that bzr does not support etckeeper's pre-commit hook.)
+
+ -- Joey Hess <joeyh@debian.org>  Tue, 11 Mar 2008 15:06:29 -0400
+
+etckeeper (0.11) unstable; urgency=low
+
+  * Add lvm cache dir to default ignores. (#462355)
+  * Updated German translation. Closes: #463153
+  * Some initial rpm support. Patch from Евгений Терешков.
+  * Add apt hooks for rpm based systems.
+  * Add nologin to default ignores.
+
+ -- Joey Hess <joeyh@debian.org>  Mon, 11 Feb 2008 00:43:19 -0500
+
+etckeeper (0.10) unstable; urgency=low
+
+  * Convert the directory parameter of etckeeper into "-d directory".
+  * Pass other patameters on from etckeeper to the .d scripts.
+  * Stop using run-parts for various reasons.
+  * Split out a commit.d that contains committing code that's used by
+    both the pre-install.d and post-install.d scripts.
+  * Split out an unclean.d that tests if the WC contains uncommitted
+    changes.
+  * Don't commit in post-install.d if there are no uncommitted changes.
+  * German debconf translation. Closes: #460940, #458751
+  * Use git status instead of git-status (missed this one before).
+
+ -- Joey Hess <joeyh@debian.org>  Tue, 15 Jan 2008 14:35:29 -0500
+
+etckeeper (0.9) unstable; urgency=low
+
+  * Separate debconf use from the main flow of the script so the commit
+    stage can use editors etc. Closes: #459547
+  * Remove the hint about setting -e to get interactive commits, since
+    I don't want to encourage users to do that. (For one thing, it's unlikely
+    to work if a graphical package manager is used..)
+
+ -- Joey Hess <joeyh@debian.org>  Mon, 07 Jan 2008 13:46:22 -0500
+
+etckeeper (0.8) unstable; urgency=low
+
+  * Typo fixes from Miklos Vajna
+  * Add backwards compatability code to handle post-apt action. Closes: #459441
+
+ -- Joey Hess <joeyh@debian.org>  Sun, 06 Jan 2008 12:54:51 -0500
+
+etckeeper (0.7) unstable; urgency=low
+
+  [ Joey Hess ]
+  * Added configuration options for highlevel and lowlevel package managers
+    in etckeeper.conf.
+  * Only install apt hooks if apt is used.
+  * Only add backup conffile exclusion to gitignore if dpkg is used.
+  * Rename pre/post-apt.d to pre/post-install.d to allow the same directories
+    to be used for other package managers.
+  * Use the name of the highlevel package manager in commit messages.
+  * Add gnarly conffile renaming code.
+  * Support mercurial as an alternative to git. Original patch by Mathieu
+    Clabaut, significantly changed.
+
+  [ Miklos Vajna ]
+  * Add support for frugalware's pacman-g2 package manager.
+  * Stop using git-foo commands.
+
+  [ Christian Perrier ]
+  * Debconf templates and debian/control reviewed by the debian-l10n-english
+    team as part of the Smith review project. Closes: #454774
+  * [Debconf translation updates]
+  * Galician. Closes: #455790
+  * Finnish. Closes: #455967
+  * Italian. Closes: #456509
+  * Portuguese. Closes: #456543
+  * French. Closes: #456920
+  * Vietnamese. Closes: #457307
+  * Czech. Closes: #457678
+  * Dutch. Closes: #457806
+  * Basque. Closes: #457830
+  * Russian. Closes: #457871
+
+  [ Joey Hess ]
+  * Commit removed files in the pre-install hook to git, as was already done
+    for hg. Avoided changing the debconf template so bubulle doesn't murder
+    me; the current wording is just vague enough to still work with the
+    current behavior.
+
+ -- Joey Hess <joeyh@debian.org>  Fri, 04 Jan 2008 18:46:49 -0500
+
+etckeeper (0.6) unstable; urgency=low
+
+  * Depend on a fairly recent git-core. Closes: #453063
+
+ -- Joey Hess <joeyh@debian.org>  Sun, 02 Dec 2007 15:46:12 -0500
+
+etckeeper (0.5) unstable; urgency=low
+
+  * Typo. Closes: #452926
+
+ -- Joey Hess <joeyh@debian.org>  Mon, 26 Nov 2007 03:16:14 -0500
+
+etckeeper (0.4) unstable; urgency=low
+
+  * Portuguese translation from Américo Monteiro. Closes: #451798
+  * Pass --quiet to git-rm calls.
+
+ -- Joey Hess <joeyh@debian.org>  Tue, 20 Nov 2007 01:04:32 -0500
+
+etckeeper (0.3) unstable; urgency=low
+
+  * Patch from Remi Vanicat adding an etckeeper.conf file and
+    a GIT_COMMIT_OPTIONS configuration setting. Closes: #451167
+  * Add network/run and adjtime to default gitignore. Closes: #451347
+  * Patch from Rémi Vanicat adding bash completion. Closes: #451302
+  * Remove redundant dependency on debconf. Closes: #451378
+
+ -- Joey Hess <joeyh@debian.org>  Thu, 15 Nov 2007 12:21:02 -0500
+
+etckeeper (0.2) unstable; urgency=low
+
+  * Add .pwd.lock to default ignores, this file is created by programs
+    that call getspent().
+  * Add tests for /etc/.git not yet existing and avoid doing bad things.
+    Closes: #451185
+  * If /etc/.git doesn't exist, display a suggestion to run etckeeper-init.
+
+ -- Joey Hess <joeyh@debian.org>  Tue, 13 Nov 2007 19:09:11 -0500
+
+etckeeper (0.1) unstable; urgency=low
+
+  * First release.
+
+ -- Joey Hess <joeyh@debian.org>  Sun, 11 Nov 2007 01:11:21 -0500
